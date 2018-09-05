@@ -35,14 +35,23 @@ public class EventController {
     @CrossOrigin("*")
     public ResponseEntity addEvent(@RequestBody EventBody eventBody) { //create EventBody to Event Throw constructor
         eventBody.setUser(userService.findById(eventBody.getuserId()).get());
-        Arrays.stream(eventBody.getCategory().split(",")).forEach(id ->
-                eventBody.addCategory(categoryService.findById(Long.valueOf(id))));
+
+       /* Arrays.stream(eventBody.getCategory().split(",")).forEach(id ->
+                eventBody.addCategory(categoryService.findById(Long.valueOf(id))));*/
 
         Event event = new Event(eventBody);
         eventService.saveEvent(event);
         eventService.findVerifyEvent().forEach(event1 -> System.out.println("Event Verify " + event1));
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
+
+    /*  @PostMapping(value = "/events")
+    @CrossOrigin("*")
+    public ResponseEntity addEvent(@RequestBody String eventBody) { //create EventBody to Event Throw constructor
+        System.out.println("!!!!   " + eventBody);
+         return new ResponseEntity(HttpStatus.CREATED);
+    }*/
 
     @GetMapping(value = "/events")
     @CrossOrigin("*")

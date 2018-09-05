@@ -48,8 +48,7 @@ public class EventService {
 
     @Scheduled(fixedDelay = 20000)
     public void removeExpEvents() {
-        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        Iterable<Event> eventIterable2 = this.eventRepository.findEventsByEndEventBefore(currentTime);
+        Iterable<Event> eventIterable2 = this.eventRepository.findEventsByEndEventLessThan(System.currentTimeMillis());
         eventIterable2.forEach(event -> {
             log.info("EventService: expired event " + event);
             deleteEvent(event);

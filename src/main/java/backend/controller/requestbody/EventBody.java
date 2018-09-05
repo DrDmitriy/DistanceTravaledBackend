@@ -19,8 +19,8 @@ public class EventBody {
     private Double latitude;
     private Double longitude;
     private String location;
-    private Timestamp startEvent;
-    private Timestamp endEvent;
+    private Long startEvent;
+    private Long endEvent;
     private Double userRating;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -28,23 +28,25 @@ public class EventBody {
             @JsonProperty("userId") Long userId,
             @JsonProperty("eventName") String eventName,
             @JsonProperty("eventDiscription") String eventDiscription,
-            @JsonProperty("category") String category,
+           // @JsonProperty("category") String category,
+            @JsonProperty("categoryList") Set<Category> categorySet,
             @JsonProperty("latitude") Double latitude,
             @JsonProperty("longitude") Double longitude,
             @JsonProperty("location") String location,
-            @JsonProperty("startEvent") String startEvent,
-            @JsonProperty("endEvent") String endEvent) {
+            @JsonProperty("startEvent") Timestamp startEvent,
+            @JsonProperty("endEvent") Timestamp endEvent) {
         this.userId = userId;
         this.eventName = eventName;
         this.eventDiscription = eventDiscription;
-        this.category = category;
+        //this.category = category;
+        this.categorySet = categorySet;
         this.latitude = latitude;
         this.longitude = longitude;
         this.location = location;
-        this.startEvent = stringDateToTimestamp(startEvent);
-        this.endEvent = stringDateToTimestamp(endEvent);
+        this.startEvent = startEvent.getTime();
+        this.endEvent = endEvent.getTime();
     }
-
+/*
     private Timestamp stringDateToTimestamp(String startEvent) {
         String[] date = startEvent.split("\\.");
         if (date != null && date.length == 5) {
@@ -57,7 +59,7 @@ public class EventBody {
         } else {
             return null;
         }
-    }
+    }*/
 
     public Set<Category> getCategorySet() {
         return categorySet;
@@ -139,19 +141,19 @@ public class EventBody {
         this.location = location;
     }
 
-    public Timestamp getStartEvent() {
+    public Long getStartEvent() {
         return startEvent;
     }
 
-    public void setStartEvent(Timestamp startEvent) {
+    public void setStartEvent(Long startEvent) {
         this.startEvent = startEvent;
     }
 
-    public Timestamp getEndEvent() {
+    public Long getEndEvent() {
         return endEvent;
     }
 
-    public void setEndEvent(Timestamp endEvent) {
+    public void setEndEvent(Long endEvent) {
         this.endEvent = endEvent;
     }
 

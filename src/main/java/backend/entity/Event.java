@@ -23,14 +23,15 @@ public class Event implements Serializable {
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "userID")
+    @JsonIgnore
     private User user;
     private Double latitude;
     private Double longitude;
-    private String locationString;//location
-    private Timestamp startEvent;
-    private Timestamp endEvent;
+    private String location;
+    private Long startEvent;
+    private Long endEvent;
+    private Long creationDate;
     private Double userRating; // Double
-
     private String status = "verify";
     @ManyToMany
     @JoinTable(name = "event_сategory",
@@ -72,6 +73,7 @@ public class Event implements Serializable {
         this.startEvent = eventBody.getStartEvent();
         this.endEvent = eventBody.getEndEvent();
         this.userRating = eventBody.getUserRating();
+        this.creationDate = System.currentTimeMillis();
     }
 
     public String getStatus() {
@@ -114,27 +116,27 @@ public class Event implements Serializable {
         this.longitude = longitude;
     }
 
-    public String getLocationString() {
-        return locationString;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocationString(String locationString) {
-        this.locationString = locationString;
+    public void setLocation(String locationString) {
+        this.location = locationString;
     }
 
-    public Timestamp getStartEvent() {
+    public Long getStartEvent() {
         return startEvent;
     }
 
-    public void setStartEvent(Timestamp startEvent) {
+    public void setStartEvent(Long startEvent) {
         this.startEvent = startEvent;
     }
 
-    public Timestamp getEndEvent() {
+    public Long getEndEvent() {
         return endEvent;
     }
 
-    public void setEndEvent(Timestamp endEvent) {
+    public void setEndEvent(Long endEvent) {
         this.endEvent = endEvent;
     }
 
@@ -146,6 +148,14 @@ public class Event implements Serializable {
         this.eventName = eventName;
     }
 
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -155,7 +165,7 @@ public class Event implements Serializable {
                 ", user=" + user +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", locationString='" + locationString + '\'' +
+                ", locationString='" + location + '\'' +
                 ", startEvent=" + startEvent +
                 ", endEvent=" + endEvent +
                 ", userRating=" + userRating +

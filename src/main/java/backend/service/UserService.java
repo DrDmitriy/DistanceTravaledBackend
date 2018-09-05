@@ -85,4 +85,5 @@ public class UserService {
     public User getByLogin(String login) {
         return repository.getUserByLogin(login);
     }
+
 }
