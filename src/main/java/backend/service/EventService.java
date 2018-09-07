@@ -18,6 +18,8 @@ public class EventService {
     private static final Logger log = LoggerFactory.getLogger(EventService.class);
 
     private EventRepository eventRepository;
+    private final String STATUS_PUBLISH = "publish";
+    private final String STATUS_VERIFY = "verify";
 
     @Autowired
     public EventService(EventRepository eventRepository) {
@@ -56,6 +58,6 @@ public class EventService {
     }
 
     public Iterable<Event> findAllEventsInBorder(Double neLat, Double neLng, Double swLat, Double swLng) {
-        return this.eventRepository.findEventsByLatitudeBetweenAndLongitudeBetween(swLat,neLat,swLng,neLng);
+        return this.eventRepository.findEventsByLatitudeBetweenAndLongitudeBetweenAndStatusEquals(swLat,neLat,swLng,neLng, this.STATUS_VERIFY);
     }
 }
