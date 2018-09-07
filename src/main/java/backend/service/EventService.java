@@ -46,12 +46,16 @@ public class EventService {
         log.info("Event was published " + event);
     }
 
-    @Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelay = 90000)
     public void removeExpEvents() {
         Iterable<Event> eventIterable2 = this.eventRepository.findEventsByEndEventLessThan(System.currentTimeMillis());
         eventIterable2.forEach(event -> {
             log.info("EventService: expired event " + event);
             deleteEvent(event);
         });
+    }
+
+    public Iterable<Event> findAllEventsInBorder(Double neLat, Double neLng, Double swLat, Double swLng) {
+        return this.eventRepository.findEventsByLatitudeBetweenAndLongitudeBetween(swLat,neLat,swLng,neLng);
     }
 }

@@ -9,4 +9,5 @@ import java.util.Set;
 public interface EventRepository extends CrudRepository<Event, Long> {
     Iterable<Event> findEventsByEndEventLessThan(Long time);
     Iterable<Event> findEventsByStatusEquals(String status);
+    Iterable<Event> findEventsByLatitudeBetweenAndLongitudeBetween(Double swLat, Double neLat, Double swLng, Double neLng);
 }
