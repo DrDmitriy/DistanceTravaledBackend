@@ -65,7 +65,7 @@ public class Application {
             coordinateList.add(coordinate3);
             //service.saveRoute(coordinateList, 27L);
             //service.deleteById(23L);
-            service.findAllUserRoutes(27L).forEach(route -> System.out.println("!!!!!!!!! " + route.toString()));
+            //service.findAllUserRoutes(27L).forEach(route -> System.out.println("!!!!!!!!! " + route.toString()));
            // service.removeExpEvents();
             *//*log.info("backend.Application is running");
             User user = new User("User1","User1Pass");
