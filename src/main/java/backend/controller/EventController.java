@@ -34,7 +34,7 @@ public class EventController {
     @PostMapping(value = "/events")
     @CrossOrigin("*")
     public ResponseEntity addEvent(@RequestBody EventBody eventBody) { //create EventBody to Event Throw constructor
-        eventBody.setUser(userService.findById(eventBody.getuserId()).get());
+        eventBody.setUser(userService.findById(eventBody.getUserId()).get());
 
        /* Arrays.stream(eventBody.getCategory().split(",")).forEach(id ->
                 eventBody.addCategory(categoryService.findById(Long.valueOf(id))));*/
