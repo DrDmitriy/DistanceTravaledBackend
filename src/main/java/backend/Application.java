@@ -52,7 +52,7 @@ public class Application {
      * @param service
      * @return
      */
-    @Bean
+   /* @Bean
     public CommandLineRunner demo(RouteService service) {
                                   //UserService service) {
         return (args) -> {
@@ -67,7 +67,7 @@ public class Application {
             //service.deleteById(23L);
             service.findAllUserRoutes(27L).forEach(route -> System.out.println("!!!!!!!!! " + route.toString()));
            // service.removeExpEvents();
-            /*log.info("backend.Application is running");
+            *//*log.info("backend.Application is running");
             User user = new User("User1","User1Pass");
 
           //  Timestamp start = new Timestamp(2018, 8, 24, 0,0,0,0);
@@ -75,7 +75,7 @@ public class Application {
             Timestamp end = new Timestamp(118, 7, 25, 0,0,0,0); // year - the year minus 1900, month - 0 to 11
             service.saveEvent("День города", "Event Discription",user,"category1",
                     55.12,33.12, "location1",start,end);
-            log.info("-------------------------------");*/
+            log.info("-------------------------------");*//*
         };
-    }
+    }*/
 }

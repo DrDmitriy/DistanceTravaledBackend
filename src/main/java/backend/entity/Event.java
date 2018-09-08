@@ -2,6 +2,9 @@ package backend.entity;
 
 import backend.controller.requestbody.EventBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@AllArgsConstructor
+@Builder
 public class Event implements Serializable {
     public Event() {
     }

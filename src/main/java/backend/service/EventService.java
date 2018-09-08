@@ -1,5 +1,6 @@
 package backend.service;
 
+import backend.form.EventForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,35 @@ public class EventService {
         log.info("Event was published " + event);
     }
 
-    @Scheduled(fixedDelay = 20000)
+    public Event updateStatus(EventForm eventForm) {
+        if (eventForm == null){
+            return null;
+        } else {
+            Event event = eventRepository.getEventByEventId(eventForm.getId());
+            event.setStatus("public");
+            event.setLocation(eventForm.getLocation());
+            event.setEventDiscription(eventForm.getDescription());
+            event.setEventName(eventForm.getLabel());
+            eventRepository.save(event);
+            return event;
+        }
+    }
+
+    public Event addEvent(Event event) {
+        if (event == null){
+            return null;
+        } else {
+            this.eventRepository.save(event);
+            return event;
+        }
+    }
+
+/*    @Scheduled(fixedDelay = 20000)
     public void removeExpEvents() {
         Iterable<Event> eventIterable2 = this.eventRepository.findEventsByEndEventLessThan(System.currentTimeMillis());
         eventIterable2.forEach(event -> {
             log.info("EventService: expired event " + event);
             deleteEvent(event);
         });
-    }
+    }*/
 }

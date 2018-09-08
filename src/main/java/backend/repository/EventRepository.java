@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 public interface EventRepository extends CrudRepository<Event, Long> {
+    Event getEventByEventId(Long id);
     Iterable<Event> findEventsByEndEventLessThan(Long time);
     Iterable<Event> findEventsByStatusEquals(String status);
 }

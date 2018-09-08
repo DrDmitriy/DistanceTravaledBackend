@@ -1,7 +1,6 @@
 package backend.controller;
 
 import backend.controller.requestbody.EventBody;
-import backend.entity.Category;
 import backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +13,6 @@ import backend.service.EventService;
 import backend.service.UserService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -34,7 +32,7 @@ public class EventController {
     @PostMapping(value = "/events")
     @CrossOrigin("*")
     public ResponseEntity addEvent(@RequestBody EventBody eventBody) { //create EventBody to Event Throw constructor
-        eventBody.setUser(userService.findById(eventBody.getuserId()).get());
+        eventBody.setUser(userService.findById(eventBody.getUserId()).get());
 
        /* Arrays.stream(eventBody.getCategory().split(",")).forEach(id ->
                 eventBody.addCategory(categoryService.findById(Long.valueOf(id))));*/
@@ -57,9 +55,9 @@ public class EventController {
     @CrossOrigin("*")
     public @ResponseBody
     List<Event> getEvents() {
-        List<Event> list = new ArrayList();
+        List<Event> list = new ArrayList<>();
         Iterable<Event> events = eventService.findAll();
-        events.forEach(event -> list.add(event));
+        events.forEach(list::add);
         return list;
     }
 }
