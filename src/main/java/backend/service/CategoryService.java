@@ -26,4 +26,8 @@ public class CategoryService {
         log.info("CategoryService: findById id = " + id + " category = " + category);
         return category;
     }
+
+    public Iterable<Category> findAll() {
+       return this.categoryRepository.findAll();
+    } ;
 }
