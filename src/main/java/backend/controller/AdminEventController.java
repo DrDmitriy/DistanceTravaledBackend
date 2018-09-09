@@ -2,6 +2,7 @@ package backend.controller;
 
 import backend.entity.Event;
 import backend.form.EventForm;
+import backend.service.EmailService;
 import backend.service.EventService;
 import backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,14 @@ import java.util.Set;
 public class AdminEventController {
 
     private final EventService eventService;
+    private final EmailService emailService;
     private final UserService userService;
     private Set<EventForm> listEventForm = new HashSet<>();
 
     @Autowired
-    public AdminEventController(EventService eventService, UserService userService) {
+    public AdminEventController(EventService eventService, EmailService emailService, UserService userService) {
         this.eventService = eventService;
+        this.emailService = emailService;
         this.userService = userService;
     }
 
@@ -73,9 +76,7 @@ public class AdminEventController {
             if (convertDateToMills(eventForm.getStartStr()) == -1 || convertDateToMills(eventForm.getEndStr()) == -1) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            System.out.println(convertDateToMills(eventForm.getStartStr()));
-            Event event =
-                            Event.builder()
+            Event event =   Event.builder()
                                 .eventName(eventForm.getLabel())
                                 .startEvent(convertDateToMills(eventForm.getStartStr()))
                                 .endEvent(convertDateToMills(eventForm.getEndStr()))
@@ -84,14 +85,30 @@ public class AdminEventController {
                                 .longitude(eventForm.getLng())
                                 .location(eventForm.getLocation())
                                 .eventDiscription(eventForm.getDescription())
-                                .status("public")
+                                .status("publish")
                                 .user(userService.getByLogin("Asdsd@sdas.cso"))
                             .build();
 
-            eventService.addEvent(event);
+            eventService.saveEvent(event);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
+    @PutMapping(value = "/admin-delete-event")
+    @CrossOrigin("*")
+    public ResponseEntity<?> deleteEvent(@RequestBody EventForm eventForm) {
+        System.out.println(eventForm);
+        if (eventForm == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            Event event = eventService.getEventByLogin(eventForm.getId());
+            eventService.deleteEvent(event);
+            listEventForm.remove(eventForm);
+            emailService.sendMailInfo(event.getUser().getLogin(), event.getLocation());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
 
     private long convertDateToMills(String date) {
         try {
