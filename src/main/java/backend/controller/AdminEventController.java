@@ -1,7 +1,11 @@
 package backend.controller;
 
+import backend.common.Constants;
+import backend.common.JWTUtils;
+import backend.entity.Category;
 import backend.entity.Event;
-import backend.form.EventForm;
+import backend.forms.EventForm;
+import backend.service.CategoryService;
 import backend.service.EmailService;
 import backend.service.EventService;
 import backend.service.UserService;
@@ -10,12 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class AdminEventController {
@@ -23,17 +27,19 @@ public class AdminEventController {
     private final EventService eventService;
     private final EmailService emailService;
     private final UserService userService;
+    private final CategoryService categoryService;
     private Set<EventForm> listEventForm = new HashSet<>();
+    private Set<String> listCategoryName;
 
     @Autowired
-    public AdminEventController(EventService eventService, EmailService emailService, UserService userService) {
+    public AdminEventController(EventService eventService, EmailService emailService, UserService userService, CategoryService categoryService) {
         this.eventService = eventService;
         this.emailService = emailService;
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
-    @GetMapping(value = "/admin-get-events")
-    @CrossOrigin("*")
+    @RequestMapping(value = "/admin-get-events", method = RequestMethod.GET)
     public Set<EventForm> getEvents() {
 
         Iterable<Event> iterable = eventService.findVerifyEvent();
@@ -47,16 +53,16 @@ public class AdminEventController {
                             .end(event.getEndEvent())
                             .lat(event.getLatitude())
                             .lng(event.getLongitude())
+                            .categories(event.getCategories())
                             .location(event.getLocation())
-                            .description(event.getEventDiscription())
+                            .description(event.getEventDescription())
                             .build();
             listEventForm.add(eventForm);
         });
         return listEventForm;
     }
 
-    @PutMapping(value = "/admin-update-status-events")
-    @CrossOrigin("*")
+    @RequestMapping(value = "/admin-update-status-events", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStatus(@RequestBody EventForm eventForm) {
         Event event = eventService.updateStatus(eventForm);
         if (event == null) {
@@ -67,9 +73,13 @@ public class AdminEventController {
         }
     }
 
-    @PostMapping(value = "/admin-add-events")
-    @CrossOrigin("*")
-    public ResponseEntity<?> addEvent(@RequestBody EventForm eventForm) {
+    @RequestMapping(value = "/admin-add-events", method = RequestMethod.POST)
+    public ResponseEntity<?> addEvent(@RequestBody EventForm eventForm, HttpServletRequest request) {
+        final String token = request.getHeader(Constants.AUTH_HEADER).substring(7);
+        List<String> dataToken = JWTUtils.getAudience(token);
+        if (!dataToken.get(4).equals("ADMIN")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         if (eventForm == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
@@ -84,27 +94,30 @@ public class AdminEventController {
                                 .latitude(eventForm.getLat())
                                 .longitude(eventForm.getLng())
                                 .location(eventForm.getLocation())
-                                .eventDiscription(eventForm.getDescription())
+                                .eventDescription(eventForm.getDescription())
                                 .status("publish")
-                                .user(userService.getByLogin("Asdsd@sdas.cso"))
+                                .userEntity(userService.getByEmail(dataToken.get(1)))
                             .build();
-
             eventService.saveEvent(event);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
-    @PutMapping(value = "/admin-delete-event")
-    @CrossOrigin("*")
-    public ResponseEntity<?> deleteEvent(@RequestBody EventForm eventForm) {
-        System.out.println(eventForm);
+    @RequestMapping(value = "/admin-delete-event", method = RequestMethod.PUT)
+    public ResponseEntity<?> deleteEvent(@RequestBody EventForm eventForm, HttpServletRequest request) {
+        final String token = request.getHeader(Constants.AUTH_HEADER).substring(7);
+        System.out.println(token);
+        List<String> dataToken = JWTUtils.getAudience(token);
+        if (!dataToken.get(4).equals("ADMIN")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         if (eventForm == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            Event event = eventService.getEventByLogin(eventForm.getId());
+            Event event = eventService.getEventById(eventForm.getId());
             eventService.deleteEvent(event);
             listEventForm.remove(eventForm);
-            emailService.sendMailInfo(event.getUser().getLogin(), event.getLocation());
+            emailService.sendMailInfo(event.getUserEntity().getEmail(), event.getLocation());
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
@@ -112,7 +125,7 @@ public class AdminEventController {
 
     private long convertDateToMills(String date) {
         try {
-            String myDate = date + " 00:00:00";
+            String myDate = date + " 01:00:00";
             LocalDateTime localDateTime = LocalDateTime.parse(myDate,
                     DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
 

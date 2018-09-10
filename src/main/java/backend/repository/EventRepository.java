@@ -1,10 +1,7 @@
 package backend.repository;
 
-import org.springframework.data.repository.CrudRepository;
 import backend.entity.Event;
-
-import java.sql.Timestamp;
-import java.util.Set;
+import org.springframework.data.repository.CrudRepository;
 
 public interface EventRepository extends CrudRepository<Event, Long> {
     Event getEventByEventId(Long id);

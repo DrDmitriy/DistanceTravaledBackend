@@ -9,19 +9,21 @@ import java.util.Set;
 @Entity
 @Table(name = "category")
 public class Category {
-    public Category() {
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     private String categoryName;
 
     @ManyToMany//(cascade = CascadeType.ALL)
-    @JoinTable(name = "event_сategory",
-                joinColumns = @JoinColumn(name = "categoryId"),
-                inverseJoinColumns = @JoinColumn(name = "eventId"))
-    private Set<Event> events = new HashSet<Event>();
     @JsonIgnore
+    @JoinTable(name = "event_сategory",
+            joinColumns = @JoinColumn(name = "categoryId"),
+            inverseJoinColumns = @JoinColumn(name = "eventId"))
+    private Set<Event> events = new HashSet<Event>();
+
+    public Category() {
+    }
+
     public Set<Event> getEvents() {
         return events;
     }

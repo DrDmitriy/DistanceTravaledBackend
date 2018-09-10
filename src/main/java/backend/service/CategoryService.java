@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.validation.constraints.NotNull;
 
 
@@ -26,6 +27,7 @@ public class CategoryService {
         log.info("CategoryService: findById id = " + id + " category = " + category);
         return category;
     }
+
 
     public Iterable<Category> findAll() {
        return this.categoryRepository.findAll();

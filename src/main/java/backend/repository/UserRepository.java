@@ -1,14 +1,11 @@
 package backend.repository;
 
+import backend.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
-import backend.entity.User;
-// import backend.entity.User;
-
 
 /**
- * repository for User Entity
+ * repository for UserEntity Entity
  */
-public interface UserRepository extends CrudRepository<User, Long> {
-     User getUserByLogin(String login);
-
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
+    UserEntity getUserByEmail(String email);
 }

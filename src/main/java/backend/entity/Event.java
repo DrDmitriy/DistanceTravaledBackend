@@ -2,34 +2,32 @@ package backend.entity;
 
 import backend.controller.requestbody.EventBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@ToString(exclude = {"categories","userEntity"})
+@Data
 public class Event implements Serializable {
-    public Event() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long eventId;
     private String eventName;
-    private String eventDiscription;
+    private String eventDescription;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "userID")
     @JsonIgnore
-    private User user;
+    private UserEntity userEntity;
     private Double latitude;
     private Double longitude;
     private String location;
@@ -42,9 +40,23 @@ public class Event implements Serializable {
     @JoinTable(name = "event_сategory",
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "categoryId"))
-    private Set<Category> categories = new HashSet<Category>();
+    @JsonIgnore
+    private Set<Category> categories = new HashSet<>();
 
-    public Set<Category> getCategories() {
+    public Event(EventBody eventBody) {
+        this.eventName = eventBody.getEventName();
+        this.eventDescription = eventBody.getEventDescription();
+        this.userEntity = eventBody.getUserEntity();
+        this.categories = eventBody.getCategorySet();
+        this.latitude = eventBody.getLatitude();
+        this.longitude = eventBody.getLongitude();
+        this.startEvent = eventBody.getStartEvent();
+        this.endEvent = eventBody.getEndEvent();
+        this.userRating = eventBody.getUserRating();
+        this.creationDate = System.currentTimeMillis();
+    }
+
+/*    public Set<Category> getCategories() {
         return categories;
     }
 
@@ -68,19 +80,6 @@ public class Event implements Serializable {
         this.categories = categories;
     }
 
-    public Event(EventBody eventBody) {
-        this.eventName = eventBody.getEventName();
-        this.eventDiscription = eventBody.getEventDiscription();
-        this.user = eventBody.getUser();
-        this.categories = eventBody.getCategorySet();
-        this.latitude = eventBody.getLatitude();
-        this.longitude = eventBody.getLongitude();
-        this.startEvent = eventBody.getStartEvent();
-        this.endEvent = eventBody.getEndEvent();
-        this.userRating = eventBody.getUserRating();
-        this.creationDate = System.currentTimeMillis();
-    }
-
     public String getStatus() {
         return status;
     }
@@ -89,20 +88,20 @@ public class Event implements Serializable {
         this.status = status;
     }
 
-    public String getEventDiscription() {
-        return eventDiscription;
+    public String getEventDescription() {
+        return eventDescription;
     }
 
-    public void setEventDiscription(String eventDiscription) {
-        this.eventDiscription = eventDiscription;
+    public void setEventDescription(String eventDescription) {
+        this.eventDescription = eventDescription;
     }
 
-    public User getUser() {
-        return user;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEntity(UserEntity user) {
+        this.userEntity = user;
     }
 
     public Double getLatitude() {
@@ -159,21 +158,5 @@ public class Event implements Serializable {
 
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "eventId=" + eventId +
-                ", eventName='" + eventName + '\'' +
-                ", eventDiscription='" + eventDiscription + '\'' +
-                ", user=" + user +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", locationString='" + location + '\'' +
-                ", startEvent=" + startEvent +
-                ", endEvent=" + endEvent +
-                ", userRating=" + userRating +
-                '}';
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-package backend.form;
+package backend.forms;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,8 +1,11 @@
-package backend.form;
+package backend.forms;
 
+import backend.entity.Category;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +22,7 @@ public class EventForm {
     private String endStr;
     private Double lat;
     private Double lng;
+    private Set<Category> categories;
     private String location;
     private String description;
 

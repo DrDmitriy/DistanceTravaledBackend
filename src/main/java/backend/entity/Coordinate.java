@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 
 @NodeEntity
 public class Coordinate {
+
     @Id
     @GeneratedValue
     private Long coordID;
@@ -23,13 +24,13 @@ public class Coordinate {
     private Double longitude;
     private Timestamp timestamp;
 
+    private Coordinate() {
+    }
+
     public Coordinate(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
         //this.route = route;
-    }
-
-    private Coordinate() {
     }
 
     public Double getLatitude() {
@@ -55,6 +56,4 @@ public class Coordinate {
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
-
-
 }

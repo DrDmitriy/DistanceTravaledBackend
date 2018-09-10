@@ -1,19 +1,27 @@
 package backend.controller.requestbody;
 
 import backend.entity.Category;
-import backend.entity.User;
+import backend.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class EventBody {
     private Long userId;
     private String eventName;
-    private String eventDiscription;
-    private User user;
+    private String eventDescription;
+    private UserEntity userEntity;
     private String category;
     private Set<Category> categorySet;
     private Double latitude;
@@ -22,12 +30,13 @@ public class EventBody {
     private Long startEvent;
     private Long endEvent;
     private Double userRating;
+}
 
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+  /*  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public EventBody(
             @JsonProperty("userId") Long userId,
             @JsonProperty("eventName") String eventName,
-            @JsonProperty("eventDiscription") String eventDiscription,
+            @JsonProperty("eventDescription") String eventDescription,
            // @JsonProperty("category") String category,
             @JsonProperty("categoryList") Set<Category> categorySet,
             @JsonProperty("latitude") Double latitude,
@@ -37,15 +46,15 @@ public class EventBody {
             @JsonProperty("endEvent") Timestamp endEvent) {
         this.userId = userId;
         this.eventName = eventName;
-        this.eventDiscription = eventDiscription;
+        this.eventDescription = eventDescription;
         //this.category = category;
         this.categorySet = categorySet;
         this.latitude = latitude;
         this.longitude = longitude;
         this.location = location;
         this.startEvent = startEvent.getTime();
-        this.endEvent = endEvent.getTime();
-    }
+        this.endEvent = endEvent.getTime();*/
+
 /*
     private Timestamp stringDateToTimestamp(String startEvent) {
         String[] date = startEvent.split("\\.");
@@ -60,108 +69,3 @@ public class EventBody {
             return null;
         }
     }*/
-
-    public Set<Category> getCategorySet() {
-        return categorySet;
-    }
-
-    public void setCategorySet(Set<Category> categorySet) {
-        this.categorySet = categorySet;
-    }
-
-    public void addCategory(Category category) {
-        if (this.categorySet == null) {
-            this.categorySet = new HashSet<>();
-        }
-        this.categorySet.add(category);
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public String getEventDiscription() {
-        return eventDiscription;
-    }
-
-    public void setEventDiscription(String eventDiscription) {
-        this.eventDiscription = eventDiscription;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Long getStartEvent() {
-        return startEvent;
-    }
-
-    public void setStartEvent(Long startEvent) {
-        this.startEvent = startEvent;
-    }
-
-    public Long getEndEvent() {
-        return endEvent;
-    }
-
-    public void setEndEvent(Long endEvent) {
-        this.endEvent = endEvent;
-    }
-
-    public Double getUserRating() {
-        return userRating;
-    }
-
-    public void setUserRating(Double userRating) {
-        this.userRating = userRating;
-    }
-}

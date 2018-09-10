@@ -1,12 +1,12 @@
 package backend.service;
 
-import backend.form.EventForm;
+import backend.entity.Event;
+import backend.forms.EventForm;
+import backend.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import backend.entity.Event;
-import backend.repository.EventRepository;
 
 import javax.validation.constraints.NotNull;
 
@@ -38,7 +38,7 @@ public class EventService {
         this.eventRepository.delete(event);
     }
 
-    public Event getEventByLogin(@NotNull Long id) {
+    public Event getEventById(@NotNull Long id) {
         return eventRepository.getEventByEventId(id);
     }
 
@@ -56,9 +56,9 @@ public class EventService {
             return null;
         } else {
             Event event = eventRepository.getEventByEventId(eventForm.getId());
-            event.setStatus("public");
+            event.setStatus("publish");
             event.setLocation(eventForm.getLocation());
-            event.setEventDiscription(eventForm.getDescription());
+            event.setEventDescription(eventForm.getDescription());
             event.setEventName(eventForm.getLabel());
             eventRepository.save(event);
             return event;
