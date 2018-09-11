@@ -6,9 +6,11 @@ import backend.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -17,20 +19,21 @@ public class EventService {
     private static final Logger log = LoggerFactory.getLogger(EventService.class);
 
     private EventRepository eventRepository;
+    private final CategoryService categoryService;
 
     @Autowired
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, CategoryService categoryService) {
         this.eventRepository = eventRepository;
+        this.categoryService = categoryService;
     }
 
     public Iterable<Event> findAll() {
         return eventRepository.findAll();
     }
 
-    public Long saveEvent(@NotNull Event event) {
+    public void saveEvent(@NotNull Event event) {
         this.eventRepository.save(event);
         log.info("eventService::  event add to BD " + event.toString());
-        return event.getEventId();
     }
 
     public void deleteEvent(@NotNull Event event) {
@@ -55,17 +58,18 @@ public class EventService {
         if (eventForm == null) {
             return null;
         } else {
+            System.out.println("lllllllllllllllll"+eventForm.getCategories());
             Event event = eventRepository.getEventByEventId(eventForm.getId());
             event.setStatus("publish");
             event.setLocation(eventForm.getLocation());
             event.setEventDescription(eventForm.getDescription());
             event.setEventName(eventForm.getLabel());
+            event.setCategories(eventForm.getCategories().stream().map(categoryService::findByName).collect(Collectors.toSet()));
             eventRepository.save(event);
             return event;
         }
     }
 
-/*
     @Scheduled(fixedDelay = 20000)
     public void removeExpEvents() {
         Iterable<Event> eventIterable2 = this.eventRepository.findEventsByEndEventLessThan(System.currentTimeMillis());
@@ -73,5 +77,5 @@ public class EventService {
             log.info("EventService: expired event " + event);
             deleteEvent(event);
         });
-    }*/
+    }
 }

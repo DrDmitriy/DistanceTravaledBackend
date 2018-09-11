@@ -20,6 +20,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class AdminEventController {
@@ -29,7 +30,6 @@ public class AdminEventController {
     private final UserService userService;
     private final CategoryService categoryService;
     private Set<EventForm> listEventForm = new HashSet<>();
-    private Set<String> listCategoryName;
 
     @Autowired
     public AdminEventController(EventService eventService, EmailService emailService, UserService userService, CategoryService categoryService) {
@@ -53,7 +53,7 @@ public class AdminEventController {
                             .end(event.getEndEvent())
                             .lat(event.getLatitude())
                             .lng(event.getLongitude())
-                            .categories(event.getCategories())
+                            .categories(event.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toSet()))
                             .location(event.getLocation())
                             .description(event.getEventDescription())
                             .build();
@@ -86,18 +86,19 @@ public class AdminEventController {
             if (convertDateToMills(eventForm.getStartStr()) == -1 || convertDateToMills(eventForm.getEndStr()) == -1) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            Event event =   Event.builder()
-                                .eventName(eventForm.getLabel())
-                                .startEvent(convertDateToMills(eventForm.getStartStr()))
-                                .endEvent(convertDateToMills(eventForm.getEndStr()))
-                                .creationDate(System.currentTimeMillis())
-                                .latitude(eventForm.getLat())
-                                .longitude(eventForm.getLng())
-                                .location(eventForm.getLocation())
-                                .eventDescription(eventForm.getDescription())
-                                .status("publish")
-                                .userEntity(userService.getByEmail(dataToken.get(1)))
-                            .build();
+            Event event = Event.builder()
+                            .eventName(eventForm.getLabel())
+                            .startEvent(convertDateToMills(eventForm.getStartStr()))
+                            .endEvent(convertDateToMills(eventForm.getEndStr()))
+                            .creationDate(System.currentTimeMillis())
+                            .latitude(eventForm.getLat())
+                            .longitude(eventForm.getLng())
+                            .categories(eventForm.getCategories().stream().map(categoryService::findByName).collect(Collectors.toSet()))
+                            .location(eventForm.getLocation())
+                            .eventDescription(eventForm.getDescription())
+                            .status("publish")
+                            .userEntity(userService.getByEmail(dataToken.get(1)))
+                          .build();
             eventService.saveEvent(event);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -106,7 +107,6 @@ public class AdminEventController {
     @RequestMapping(value = "/admin-delete-event", method = RequestMethod.PUT)
     public ResponseEntity<?> deleteEvent(@RequestBody EventForm eventForm, HttpServletRequest request) {
         final String token = request.getHeader(Constants.AUTH_HEADER).substring(7);
-        System.out.println(token);
         List<String> dataToken = JWTUtils.getAudience(token);
         if (!dataToken.get(4).equals("ADMIN")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -125,9 +125,8 @@ public class AdminEventController {
 
     private long convertDateToMills(String date) {
         try {
-            String myDate = date + " 01:00:00";
-            LocalDateTime localDateTime = LocalDateTime.parse(myDate,
-                    DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+            LocalDateTime localDateTime = LocalDateTime.parse(date,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
 
             return localDateTime
                     .atZone(ZoneId.systemDefault())

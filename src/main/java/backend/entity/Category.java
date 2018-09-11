@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,10 +17,10 @@ public class Category {
 
     @ManyToMany//(cascade = CascadeType.ALL)
     @JsonIgnore
-    @JoinTable(name = "event_сategory",
+    @JoinTable(name = "event_category",
             joinColumns = @JoinColumn(name = "categoryId"),
             inverseJoinColumns = @JoinColumn(name = "eventId"))
-    private Set<Event> events = new HashSet<Event>();
+    private Set<Event> events = new HashSet<>();
 
     public Category() {
     }
@@ -54,5 +55,19 @@ public class Category {
                 "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(categoryId, category.categoryId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(categoryId);
     }
 }

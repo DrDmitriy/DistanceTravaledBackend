@@ -28,8 +28,13 @@ public class CategoryService {
         return category;
     }
 
+    public Category findByName(@NotNull String name) {
+        Category category = this.categoryRepository.getCategoryByCategoryName(name);
+        log.info("CategoryService: findById id = " + name + " category = " + category);
+        return category;
+    }
 
     public Iterable<Category> findAll() {
        return this.categoryRepository.findAll();
-    } ;
+    }
 }

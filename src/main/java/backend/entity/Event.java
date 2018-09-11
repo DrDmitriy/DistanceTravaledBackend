@@ -37,7 +37,7 @@ public class Event implements Serializable {
     private Double userRating; // Double
     private String status = "verify";
     @ManyToMany
-    @JoinTable(name = "event_сategory",
+    @JoinTable(name = "event_category",
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "categoryId"))
     @JsonIgnore
