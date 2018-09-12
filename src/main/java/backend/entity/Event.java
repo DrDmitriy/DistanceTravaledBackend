@@ -2,6 +2,7 @@ package backend.entity;
 
 import backend.controller.requestbody.EventBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class Event implements Serializable {
     @Column(name = "event_id")
     private Long eventId;
     private String eventName;
+    @Type(type = "text")
     private String eventDiscription;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

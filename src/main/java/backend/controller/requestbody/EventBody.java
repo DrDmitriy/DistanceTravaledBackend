@@ -29,7 +29,7 @@ public class EventBody {
             @JsonProperty("eventName") String eventName,
             @JsonProperty("eventDiscription") String eventDiscription,
            // @JsonProperty("category") String category,
-            @JsonProperty("categoryList") Set<Category> categorySet,
+            @JsonProperty("categories") Set<Category> categorySet,
             @JsonProperty("latitude") Double latitude,
             @JsonProperty("longitude") Double longitude,
             @JsonProperty("location") String location,
