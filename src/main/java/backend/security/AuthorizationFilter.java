@@ -23,7 +23,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader(Constants.AUTH_HEADER);
-
         if (authHeader != null && authHeader.startsWith(Constants.HEADER_PREFIX)) {
             final String token = authHeader.substring(7);
             if (JWTUtils.isTokenExpired(token)) {

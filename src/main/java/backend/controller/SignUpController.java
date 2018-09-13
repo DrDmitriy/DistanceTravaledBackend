@@ -1,6 +1,6 @@
 package backend.controller;
 
-import backend.forms.UserFormSignUp;
+import backend.forms.UserFormData;
 import backend.entity.UserEntity;
 import backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class SignUpController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> postSignUp(@RequestBody UserFormSignUp userFormSignUp) {
-        UserEntity user = userService.saveUser(userFormSignUp);
+    public ResponseEntity<?> postSignUp(@RequestBody UserFormData userFormData) {
+        UserEntity user = userService.saveUser(userFormData);
         if (user != null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

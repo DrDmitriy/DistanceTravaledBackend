@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @Builder
 @ToString
-public class UserFormSignUp {
+public class UserFormData {
     private String email;
     private String password;
     private String name;

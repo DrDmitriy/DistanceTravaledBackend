@@ -19,11 +19,11 @@ public class ResetPasswordService {
     }
 
 
-    public UserEntity updatePasswordByEmail(String login, String password) {
-        if (login == null || password == null) {
+    public UserEntity updatePasswordByEmail(String email, String password) {
+        if (email == null || password == null) {
             return null;
         } else {
-            UserEntity userEntity = userRepository.getUserByEmail(login);
+            UserEntity userEntity = userRepository.getUserByEmail(email);
             userEntity.setPassword(passwordEncoder.encode(password));
             userRepository.save(userEntity);
             return userEntity;

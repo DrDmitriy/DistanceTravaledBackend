@@ -17,7 +17,7 @@ import java.util.List;
 public class UserEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.TABLE)
     @Column(name="user_id", nullable = false, unique = true)
     private Long userID;
 
@@ -41,6 +41,10 @@ public class UserEntity implements Serializable {
     @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Basic
+    @Column(nullable = false)
+    private boolean facebook;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userEntity")
     @JsonIgnore

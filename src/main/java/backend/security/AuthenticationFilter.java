@@ -4,6 +4,7 @@ import backend.common.Constants;
 import backend.common.JWTUtils;
 import backend.entity.UserEntity;
 import backend.repository.UserRepository;
+import backend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private UserRepository userRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String email;
+    @Autowired
+    private UserService userService;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -36,9 +39,24 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             UserEntity userEntity = objectMapper
                     .readValue(request.getInputStream(), UserEntity.class);
             email = userEntity.getEmail();
-            final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    userEntity.getEmail(), userEntity.getPassword()
-            );
+            final UsernamePasswordAuthenticationToken token;
+            UserEntity forFacebook = userRepository.getUserByEmail(email);
+            if (forFacebook.isFacebook()){
+                token = new UsernamePasswordAuthenticationToken(
+                        userEntity.getEmail(), " "
+                );
+                System.out.println();
+            }else {
+                if (userEntity.getPassword().equals(" ")){
+                    token = new UsernamePasswordAuthenticationToken(
+                            userEntity.getEmail(), ""
+                    );
+                } else {
+                    token = new UsernamePasswordAuthenticationToken(
+                            userEntity.getEmail(), userEntity.getPassword()
+                    );
+                }
+            }
             return getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
             throw new InternalAuthenticationServiceException("Error while sign in", e);
@@ -48,8 +66,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         UserEntity userEntity = userRepository.getUserByEmail(email);
+        if (userEntity.isFacebook()){
+            userService.joinFacebook(email,false);
+        }
         String token = JWTUtils.generateToken(userEntity.getUserID(), userEntity.getEmail(), userEntity.getName(), userEntity.getSurname(), userEntity.getRole());
         response.addHeader(Constants.AUTH_HEADER, Constants.HEADER_PREFIX  + token);
+        response.addCookie(new Cookie("id", userEntity.getUserID().toString()));
         response.addCookie(new Cookie("role", userEntity.getRole().toString()));
         response.addCookie(new Cookie("name", userEntity.getName()));
         response.addCookie(new Cookie("surname", userEntity.getSurname()));
@@ -60,6 +82,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                               AuthenticationException failed) {
         if (failed instanceof BadCredentialsException || failed.getCause() instanceof BadCredentialsException ||
                 failed instanceof UsernameNotFoundException) {
+            if (userRepository.getUserByEmail(email).isFacebook()){
+                userService.joinFacebook(email,false);
+            }
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         }
