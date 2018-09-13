@@ -76,6 +76,7 @@ public class Event implements Serializable {
         this.endEvent = eventBody.getEndEvent();
         this.userRating = eventBody.getUserRating();
         this.creationDate = System.currentTimeMillis();
+        this.location = eventBody.getLocation();
     }
 
     public String getStatus() {
@@ -122,8 +123,8 @@ public class Event implements Serializable {
         return location;
     }
 
-    public void setLocation(String locationString) {
-        this.location = locationString;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Long getStartEvent() {
@@ -167,7 +168,7 @@ public class Event implements Serializable {
                 ", user=" + user +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", locationString='" + location + '\'' +
+                ", location='" + location + '\'' +
                 ", startEvent=" + startEvent +
                 ", endEvent=" + endEvent +
                 ", userRating=" + userRating +
