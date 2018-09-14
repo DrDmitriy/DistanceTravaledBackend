@@ -2,10 +2,11 @@ package backend.entity;
 
 import backend.controller.requestbody.EventBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 import lombok.*;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,13 +17,16 @@ import java.util.Set;
 @ToString(exclude = {"categories","userEntity"})
 @Data
 public class Event implements Serializable {
+    public Event() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long eventId;
     private String eventName;
-    private String eventDescription;
+    @Type(type = "text")
+    private String eventDiscription;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "userID")
@@ -124,8 +128,8 @@ public class Event implements Serializable {
         return location;
     }
 
-    public void setLocation(String locationString) {
-        this.location = locationString;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Long getStartEvent() {
@@ -158,5 +162,25 @@ public class Event implements Serializable {
 
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
+
     }*/
+
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "eventId=" + eventId +
+                ", eventName='" + eventName + '\'' +
+                ", eventDiscription='" + eventDiscription + '\'' +
+                ", user=" + user +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", location='" + location + '\'' +
+                ", startEvent=" + startEvent +
+                ", endEvent=" + endEvent +
+                ", userRating=" + userRating +
+                '}';
+    }
+
 }
