@@ -17,16 +17,13 @@ import java.util.Set;
 @ToString(exclude = {"categories","userEntity"})
 @Data
 public class Event implements Serializable {
-    public Event() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long eventId;
     private String eventName;
     @Type(type = "text")
-    private String eventDiscription;
+    private String eventDescription;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "userID")
@@ -165,15 +162,15 @@ public class Event implements Serializable {
 
     }*/
 
-    }
+
 
     @Override
     public String toString() {
         return "Event{" +
                 "eventId=" + eventId +
                 ", eventName='" + eventName + '\'' +
-                ", eventDiscription='" + eventDiscription + '\'' +
-                ", user=" + user +
+                ", eventDiscription='" + eventDescription + '\'' +
+                ", user=" + userEntity +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", location='" + location + '\'' +
