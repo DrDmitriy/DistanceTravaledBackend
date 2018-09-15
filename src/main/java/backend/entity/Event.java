@@ -40,7 +40,6 @@ public class Event implements Serializable {
     @JoinTable(name = "event_category",
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "categoryId"))
-    @JsonIgnore
     private Set<Category> categories = new HashSet<>();
 
     public Event(EventBody eventBody) {
