@@ -37,7 +37,7 @@ public class ConfigureAuthentication extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/signUp", "/reset-password").permitAll()
+                    .antMatchers("/signUp", "/reset-password", "/events").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .addFilter(authenticationFilter())
