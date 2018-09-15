@@ -41,13 +41,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             email = userEntity.getEmail();
             final UsernamePasswordAuthenticationToken token;
             UserEntity forFacebook = userRepository.getUserByEmail(email);
-            if (forFacebook.isFacebook()){
+            if (forFacebook!=null && forFacebook.isFacebook()) {
                 token = new UsernamePasswordAuthenticationToken(
                         userEntity.getEmail(), " "
                 );
-                System.out.println();
-            }else {
-                if (userEntity.getPassword().equals(" ")){
+            } else {
+                if (userEntity.getPassword()!=null && userEntity.getPassword().equals(" ")) {
                     token = new UsernamePasswordAuthenticationToken(
                             userEntity.getEmail(), ""
                     );
@@ -66,11 +65,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         UserEntity userEntity = userRepository.getUserByEmail(email);
-        if (userEntity.isFacebook()){
-            userService.joinFacebook(email,false);
+        if (userEntity.isFacebook()) {
+            userService.joinFacebook(email, false);
         }
         String token = JWTUtils.generateToken(userEntity.getUserID(), userEntity.getEmail(), userEntity.getName(), userEntity.getSurname(), userEntity.getRole());
-        response.addHeader(Constants.AUTH_HEADER, Constants.HEADER_PREFIX  + token);
+        response.addHeader(Constants.AUTH_HEADER, Constants.HEADER_PREFIX + token);
         response.addCookie(new Cookie("id", userEntity.getUserID().toString()));
         response.addCookie(new Cookie("role", userEntity.getRole().toString()));
         response.addCookie(new Cookie("name", userEntity.getName()));
@@ -82,8 +81,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                               AuthenticationException failed) {
         if (failed instanceof BadCredentialsException || failed.getCause() instanceof BadCredentialsException ||
                 failed instanceof UsernameNotFoundException) {
-            if (userRepository.getUserByEmail(email).isFacebook()){
-                userService.joinFacebook(email,false);
+            UserEntity userEntity = userRepository.getUserByEmail(email);
+            if (userEntity != null && userEntity.isFacebook()) {
+                userService.joinFacebook(email, false);
             }
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

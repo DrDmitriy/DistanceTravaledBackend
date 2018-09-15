@@ -14,9 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Builder
 public class EventBody {
     private Long userId;
     private String eventName;
@@ -30,9 +28,9 @@ public class EventBody {
     private Long startEvent;
     private Long endEvent;
     private Double userRating;
-}
 
-  /*  @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public EventBody(
             @JsonProperty("userId") Long userId,
             @JsonProperty("eventName") String eventName,
@@ -53,7 +51,9 @@ public class EventBody {
         this.longitude = longitude;
         this.location = location;
         this.startEvent = startEvent.getTime();
-        this.endEvent = endEvent.getTime();*/
+        this.endEvent = endEvent.getTime();
+    }
+}
 
 /*
     private Timestamp stringDateToTimestamp(String startEvent) {

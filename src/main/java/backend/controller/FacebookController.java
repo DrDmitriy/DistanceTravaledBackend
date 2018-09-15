@@ -21,7 +21,8 @@ public class FacebookController {
         this.userService = userService;
     }
 
-    @GetMapping("/facebook/auth")
+    @GetMapping("/user")
+    @CrossOrigin("*")
     public String getNotification(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map data = (HashMap) ((OAuth2Authentication) request.getUserPrincipal()).getUserAuthentication().getDetails();
         String email = data.get("email").toString();

@@ -1,5 +1,7 @@
 package backend.controller;
 
+import backend.common.Constants;
+import backend.common.JWTUtils;
 import backend.controller.requestbody.EventBody;
 import backend.entity.Event;
 import backend.service.CategoryService;
@@ -11,10 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 public class EventController {
     private EventService eventService;
     private UserService userService;
@@ -28,10 +31,15 @@ public class EventController {
 
     }
 
-    @PostMapping(value = "/events")
-    @CrossOrigin("*")
-    public ResponseEntity addEvent(@RequestBody EventBody eventBody) { //create EventBody to Event Throw constructor
-        eventBody.setUserEntity(userService.findById(eventBody.getUserId()).get());
+    @RequestMapping(value = "/events", method = RequestMethod.POST)
+    public ResponseEntity addEvent(@RequestBody EventBody eventBody, HttpServletRequest request) { //create EventBody to Event Throw constructor
+        final String token = request.getHeader(Constants.AUTH_HEADER).substring(7);
+        List<String> dataToken = JWTUtils.getAudience(token);
+        //eventBody.setUserEntity(userService.findById(eventBody.getUserId()).get());
+
+        eventBody.setUserEntity(userService.findById(Long.valueOf(dataToken.get(0))).get());
+
+
 
        /* Arrays.stream(eventBody.getCategory().split(",")).forEach(id ->
                 eventBody.addCategory(categoryService.findById(Long.valueOf(id))));*/
@@ -50,10 +58,8 @@ public class EventController {
          return new ResponseEntity(HttpStatus.CREATED);
     }*/
 
-    @GetMapping(value = "/events")
-    @CrossOrigin("*")
-    public @ResponseBody
-    List<Event> getEvents() {
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
+    public List<Event> getEvents() {
         List<Event> list = new ArrayList<>();
         Iterable<Event> events = eventService.findAll();
         events.forEach(list::add);
