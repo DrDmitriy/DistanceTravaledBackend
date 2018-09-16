@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.entity.Event;
+import backend.entity.UserEntity;
 import backend.forms.EventForm;
 import backend.repository.EventRepository;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ public class EventService {
 
     private EventRepository eventRepository;
     private final CategoryService categoryService;
+    private final String STATUS_PUBLISH = "publish";
+    private final String STATUS_VERIFY = "verify";
 
     @Autowired
     public EventService(EventRepository eventRepository, CategoryService categoryService) {
@@ -47,6 +50,12 @@ public class EventService {
 
     public Iterable<Event> findVerifyEvent() {
         return this.eventRepository.findEventsByStatusEquals("verify");
+    }
+    public Iterable<Event> findAllPublish() {
+        return this.eventRepository.findEventsByStatusEquals("publish");
+    }
+    public Iterable<Event> findAllUserVerifyEvents(UserEntity userEntity) {
+        return this.eventRepository.findEventsByUserEntityEqualsAndStatusEquals(userEntity, STATUS_VERIFY);
     }
 
     public void publish(Event event) {
@@ -77,5 +86,9 @@ public class EventService {
             log.info("EventService: expired event " + event);
             deleteEvent(event);
         });
+    }
+
+    public Iterable<Event> findAllEventsInBorder(Double neLat, Double neLng, Double swLat, Double swLng) {
+        return this.eventRepository.findEventsByLatitudeBetweenAndLongitudeBetweenAndStatusEquals(swLat,neLat,swLng,neLng, this.STATUS_PUBLISH);
     }
 }
