@@ -41,7 +41,7 @@ public class Event implements Serializable {
     @JoinTable(name = "event_category",
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "categoryId"))
-    @JsonIgnore
+  //  @JsonIgnore
     private Set<Category> categories = new HashSet<>();
 
     public Event(EventBody eventBody) {
@@ -55,9 +55,10 @@ public class Event implements Serializable {
         this.endEvent = eventBody.getEndEvent();
         this.userRating = eventBody.getUserRating();
         this.creationDate = System.currentTimeMillis();
+        this.location = eventBody.getLocation();
     }
 
-/*    public Set<Category> getCategories() {
+   public Set<Category> getCategories() {
         return categories;
     }
 
@@ -160,7 +161,7 @@ public class Event implements Serializable {
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
 
-    }*/
+    }
 
 
 

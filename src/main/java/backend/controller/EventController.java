@@ -5,16 +5,18 @@ import backend.entity.Event;
 import backend.service.CategoryService;
 import backend.service.EventService;
 import backend.service.UserService;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 public class EventController {
     private EventService eventService;
     private UserService userService;
@@ -29,8 +31,10 @@ public class EventController {
     }
 
     @PostMapping(value = "/events")
-    @CrossOrigin("*")
+    //@CrossOrigin("*")
     public ResponseEntity addEvent(@RequestBody EventBody eventBody) { //create EventBody to Event Throw constructor
+
+
         eventBody.setUserEntity(userService.findById(eventBody.getUserId()).get());
 
        /* Arrays.stream(eventBody.getCategory().split(",")).forEach(id ->
@@ -39,6 +43,7 @@ public class EventController {
         Event event = new Event(eventBody);
         eventService.saveEvent(event);
         eventService.findVerifyEvent().forEach(event1 -> System.out.println("Event Verify " + event1));
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -51,12 +56,12 @@ public class EventController {
     }*/
 
     @GetMapping(value = "/events")
-    @CrossOrigin("*")
-    public @ResponseBody
-    List<Event> getEvents() {
+    //@CrossOrigin("*")
+    public List<Event> getEvents(HttpServletResponse response) {
         List<Event> list = new ArrayList<>();
         Iterable<Event> events = eventService.findAll();
         events.forEach(list::add);
+        response.setStatus(HttpStatus.OK.value());
         return list;
     }
 }
