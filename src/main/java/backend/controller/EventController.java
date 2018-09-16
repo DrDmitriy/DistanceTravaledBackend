@@ -7,13 +7,14 @@ import backend.entity.Event;
 import backend.service.CategoryService;
 import backend.service.EventService;
 import backend.service.UserService;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class EventController {
 
     }
 
+
     @RequestMapping(value = "/events", method = RequestMethod.POST)
     public ResponseEntity addEvent(@RequestBody EventBody eventBody, HttpServletRequest request) { //create EventBody to Event Throw constructor
         final String token = request.getHeader(Constants.AUTH_HEADER).substring(7);
@@ -39,7 +41,15 @@ public class EventController {
 
         eventBody.setUserEntity(userService.findById(Long.valueOf(dataToken.get(0))).get());
 
+/*
 
+    @PostMapping(value = "/events")
+    //@CrossOrigin("*")
+    public ResponseEntity addEvent(@RequestBody EventBody eventBody) { //create EventBody to Event Throw constructor
+
+
+        eventBody.setUserEntity(userService.findById(eventBody.getUserId()).get());
+*/
 
        /* Arrays.stream(eventBody.getCategory().split(",")).forEach(id ->
                 eventBody.addCategory(categoryService.findById(Long.valueOf(id))));*/
@@ -47,6 +57,7 @@ public class EventController {
         Event event = new Event(eventBody);
         eventService.saveEvent(event);
         eventService.findVerifyEvent().forEach(event1 -> System.out.println("Event Verify " + event1));
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -60,9 +71,15 @@ public class EventController {
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public List<Event> getEvents() {
+/*
+    @GetMapping(value = "/events")
+    //@CrossOrigin("*")
+    public List<Event> getEvents(HttpServletResponse response) {
+*/
         List<Event> list = new ArrayList<>();
         Iterable<Event> events = eventService.findAll();
         events.forEach(list::add);
+        response.setStatus(HttpStatus.OK.value());
         return list;
     }
 }

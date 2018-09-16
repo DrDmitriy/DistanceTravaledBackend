@@ -70,7 +70,7 @@ public class EventService {
         }
     }
 
-    @Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelay = 900000)
     public void removeExpEvents() {
         Iterable<Event> eventIterable2 = this.eventRepository.findEventsByEndEventLessThan(System.currentTimeMillis());
         eventIterable2.forEach(event -> {

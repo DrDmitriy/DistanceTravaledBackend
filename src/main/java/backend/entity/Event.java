@@ -2,10 +2,11 @@ package backend.entity;
 
 import backend.controller.requestbody.EventBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 import lombok.*;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,12 +17,12 @@ import java.util.Set;
 @ToString(exclude = {"categories","userEntity"})
 @Data
 public class Event implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long eventId;
     private String eventName;
+    @Type(type = "text")
     private String eventDescription;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
@@ -40,6 +41,7 @@ public class Event implements Serializable {
     @JoinTable(name = "event_category",
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "categoryId"))
+
     private Set<Category> categories = new HashSet<>();
 
     public Event(EventBody eventBody) {
@@ -53,6 +55,7 @@ public class Event implements Serializable {
         this.endEvent = eventBody.getEndEvent();
         this.userRating = eventBody.getUserRating();
         this.creationDate = System.currentTimeMillis();
+        this.location = eventBody.getLocation();
     }
 
 /*    public Set<Category> getCategories() {
@@ -123,8 +126,8 @@ public class Event implements Serializable {
         return location;
     }
 
-    public void setLocation(String locationString) {
-        this.location = locationString;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Long getStartEvent() {
@@ -157,5 +160,25 @@ public class Event implements Serializable {
 
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
-    }*/
+
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "eventId=" + eventId +
+                ", eventName='" + eventName + '\'' +
+                ", eventDiscription='" + eventDescription + '\'' +
+                ", user=" + userEntity +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", location='" + location + '\'' +
+                ", startEvent=" + startEvent +
+                ", endEvent=" + endEvent +
+                ", userRating=" + userRating +
+                '}';
+    }
+
 }
