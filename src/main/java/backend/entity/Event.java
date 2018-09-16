@@ -57,8 +57,9 @@ public class Event implements Serializable {
         this.creationDate = System.currentTimeMillis();
         this.location = eventBody.getLocation();
     }
+}
 
-/*    public Set<Category> getCategories() {
+ /*  public Set<Category> getCategories() {
         return categories;
     }
 
@@ -182,3 +183,4 @@ public class Event implements Serializable {
     }
 
 }
+*/

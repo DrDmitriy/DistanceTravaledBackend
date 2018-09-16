@@ -57,7 +57,7 @@ public class EventBody {
     }
 
 }
-}
+
 
 /*
     private Timestamp stringDateToTimestamp(String startEvent) {

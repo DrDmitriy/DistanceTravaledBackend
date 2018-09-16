@@ -70,7 +70,7 @@ public class EventController {
     }*/
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
-    public List<Event> getEvents() {
+    public List<Event> getEvents(HttpServletResponse response) {
 /*
     @GetMapping(value = "/events")
     //@CrossOrigin("*")
