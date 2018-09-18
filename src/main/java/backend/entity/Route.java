@@ -1,5 +1,6 @@
 package backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.*;
 
 import java.util.ArrayList;
@@ -19,12 +20,16 @@ public class Route {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long routeID;
 
     @Relationship(type = "ROUTING", direction = Relationship.OUTGOING)
-    private List<Coordinate> coordinates;
+    private List<Coordinate> route;
 
+    @JsonIgnore
     private Long userID;
+    @JsonIgnore
+    private Long dateOfCreation;
 
     public Route() {
     }
@@ -33,14 +38,26 @@ public class Route {
         this.userID = userID;
     }
 
-    public Route(List<Coordinate> coordinates, Long userID) {
-        this.coordinates = coordinates;
+    public Route(List<Coordinate> route, Long userID) {
+        this.route = route;
         this.userID = userID;
+    }
+
+    public Route(Route route){
+        this.route = route.route;
+        this.dateOfCreation = route.dateOfCreation;
+        this.userID = route.userID;
+    }
+
+    public Route(List<Coordinate> route, Long userID, Long dateOfCreation){
+        this.route = route;
+        this.userID = userID;
+        this.dateOfCreation = dateOfCreation;
     }
 
     public String toString() {
         return String.format(" Route: id = %d, user = '%d', number of coords = '%d'",
-                routeID, userID, coordinates.size());
+                routeID, userID, route.size());
     }
 
     /**
@@ -49,17 +66,17 @@ public class Route {
      */
 
     public void addCoordinate(Coordinate next) {
-        if (coordinates == null) {
-            coordinates = new ArrayList<>();
+        if (route == null) {
+            route = new ArrayList<>();
         }
-        coordinates.add(next);
+        route.add(next);
     }
 
-    public void addAllCoordinates(Iterable<Coordinate> nextCoordinates) {
-        if (coordinates == null) {
-            coordinates = new ArrayList<>();
+    public void addAllroute(Iterable<Coordinate> nextroute) {
+        if (route == null) {
+            route = new ArrayList<>();
         }
-        nextCoordinates.forEach(coordinates::add);
+        nextroute.forEach(route::add);
     }
 
 
@@ -73,12 +90,12 @@ public class Route {
     }
 
 
-    public List<Coordinate> getCoordinates() {
-        return coordinates;
+    public List<Coordinate> getroute() {
+        return route;
     }
 
-    public void setCoordinates(List<Coordinate> coordinates) {
-        this.coordinates = coordinates;
+    public void setroute(List<Coordinate> route) {
+        this.route = route;
     }
 
     public Long getUserID() {
@@ -88,4 +105,8 @@ public class Route {
     public void setUserID(Long userID) {
         this.userID = userID;
     }
+
+    public void setDateOfCreation(Long dateOfCreation){ this.dateOfCreation = dateOfCreation; }
+
+    public Long getDateOfCreation(){ return this.dateOfCreation; }
 }
