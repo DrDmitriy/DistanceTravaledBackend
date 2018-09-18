@@ -5,6 +5,7 @@ import backend.entity.Route;
 import backend.repository.RouteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,12 +27,23 @@ public class RouteService {
 
     private RouteRepository repository;
 
+    @Autowired
     public RouteService(RouteRepository repository) {
         this.repository = repository;
     }
 
+/*
     public Long saveRoute(List<Coordinate> coordinates, Long userID) {
         Route route = new Route(coordinates, userID);
+        log.info("routeService:: new route " + route.toString());
+        repository.save(route);
+        log.info("routeService:: new route " + route.toString());
+        return route.getRouteID();
+    }
+*/
+
+    public Long saveRoute(List<Coordinate> coordinates, Long userID, Long dateOfCreation) {
+        Route route = new Route(coordinates, userID, dateOfCreation);
         log.info("routeService:: new route " + route.toString());
         repository.save(route);
         log.info("routeService:: new route " + route.toString());
@@ -43,17 +55,17 @@ public class RouteService {
         repository.deleteById(routeID);
     }
 
-    public void updateCoordinatesForRoute(Long routeID, Iterable<Coordinate> nextCoordinates) {
+    /*public void updateCoordinatesForRoute(Long routeID, Iterable<Coordinate> nextCoordinates) {
         Optional<Route> optionalRoute = findById(routeID);
         Route route = null;
         if (optionalRoute.isPresent()) {
             route = optionalRoute.get();
         }
-        route.addAllCoordinates(nextCoordinates);
+        route.addRoute(nextCoordinates);
         log.info("routeService:: route updated " + routeID);
         repository.save(route);
     }
-
+*/
     public Optional<Route> findById(Long id) {
         return repository.findById(id);
     }
@@ -66,5 +78,16 @@ public class RouteService {
 
     public Iterable<Route> findAllUserRoutes(Long userId){
        return this.repository.findAllByUserIDEquals(userId);
+    }
+
+    public Iterable<Route> findRutesForCurentDates(Long dateBegin, Long dateEnd) {
+        Iterable<Route> list = new ArrayList<>();
+        list = repository.findAllBydateOfCreationBetween(dateBegin, dateEnd);
+        return list;
+    }
+
+    public void clearBd() {
+        repository.deleteAll();
+
     }
 }
