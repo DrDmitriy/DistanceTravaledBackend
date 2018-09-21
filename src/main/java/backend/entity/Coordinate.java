@@ -1,5 +1,6 @@
 package backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -18,43 +19,52 @@ import java.sql.Timestamp;
 public class Coordinate {
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long coordID;
-    private Double latitude;
-    private Double longitude;
-    private Timestamp timestamp;
 
-    public Coordinate(Double latitude, Double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        //this.route = route;
+
+    private Double lat;
+    private Double lng;
+    private Long date;
+
+    public Coordinate() {
     }
 
-    private Coordinate() {
+    public Coordinate(Double lat, Double lng, Long date) {
+        this.lat = lat;
+        this.lng = lng;
+        this.date = date;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    public Long getCoordID() {
+        return coordID;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setCoordID(Long coordID) {
+        this.coordID = coordID;
     }
 
-    public Double getLongitude() {
-        return longitude;
+    public Double getLat() {
+        return lat;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setLat(Double lat) {
+        this.lat = lat;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Double getLng() {
+        return lng;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
+    public Long getDate() {
+        return date;
+    }
 
+    public void setDate(Long date) {
+        this.date = date;
+    }
 }

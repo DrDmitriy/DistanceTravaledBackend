@@ -1,8 +1,9 @@
-package backend.form;
+package backend.forms;
 
 import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class EventForm {
     private String endStr;
     private Double lat;
     private Double lng;
+    private Set<String> categories;
     private String location;
     private String description;
 

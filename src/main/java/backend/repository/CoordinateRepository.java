@@ -1,7 +1,7 @@
 package backend.repository;
 
-import org.springframework.data.neo4j.repository.Neo4jRepository;
 import backend.entity.Coordinate;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 /**
  * repository for Coordinate Node Entity

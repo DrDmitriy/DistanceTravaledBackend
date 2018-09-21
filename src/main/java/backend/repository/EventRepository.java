@@ -1,14 +1,17 @@
 package backend.repository;
 
-import org.springframework.data.repository.CrudRepository;
 import backend.entity.Event;
-
-import java.sql.Timestamp;
-import java.util.Set;
+import backend.entity.UserEntity;
+import org.springframework.data.repository.CrudRepository;
 
 public interface EventRepository extends CrudRepository<Event, Long> {
     Event getEventByEventId(Long id);
+
     Iterable<Event> findEventsByEndEventLessThan(Long time);
+
     Iterable<Event> findEventsByStatusEquals(String status);
+
     Iterable<Event> findEventsByLatitudeBetweenAndLongitudeBetweenAndStatusEquals(Double swLat, Double neLat, Double swLng, Double neLng, String status);
+
+    Iterable<Event> findEventsByUserEntityEqualsAndStatusEquals(UserEntity userEntity, String status);
 }
