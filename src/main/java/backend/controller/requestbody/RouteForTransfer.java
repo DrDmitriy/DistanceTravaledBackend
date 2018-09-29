@@ -10,36 +10,39 @@ public class RouteForTransfer {
     private List<Route> userRoutes;
     private String token;
 
-    public RouteForTransfer(){
+    public RouteForTransfer() {
         userRoutes = new ArrayList<Route>();
     }
-    public RouteForTransfer(List<Route> userRoutes){
+
+    public RouteForTransfer(List<Route> userRoutes) {
         this.userRoutes = userRoutes;
     }
 
-    public void addRouteToList(Route route){
-        if(route != null){
+    public void addRouteToList(Route route) {
+        if (route != null) {
             userRoutes.add(route);
         }
     }
 
-    public void addAllroutesToList(List<Route> routes){
-        if(routes != null){
-            for (Route route: routes) {
+    public void addAllroutesToList(List<Route> routes) {
+        if (routes != null) {
+            for (Route route : routes) {
                 userRoutes.add(route);
             }
         }
     }
-    public void setToken(String token){
+
+    public void setToken(String token) {
         this.token = token;
     }
 
     @JsonGetter
-    public List<Route> getUserCoords(){
+    public List<Route> getUserCoords() {
         return this.userRoutes;
     }
+
     @JsonGetter
-    public String getToken(){
+    public String getToken() {
         return this.token;
     }
 }

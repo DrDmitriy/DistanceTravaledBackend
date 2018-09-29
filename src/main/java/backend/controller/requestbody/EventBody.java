@@ -32,7 +32,6 @@ public class EventBody {
             @JsonProperty("userId") Long userId,
             @JsonProperty("eventName") String eventName,
             @JsonProperty("eventDescription") String eventDescription,
-            // @JsonProperty("category") String category,
             @JsonProperty("categories") Set<Category> categorySet,
             @JsonProperty("latitude") Double latitude,
             @JsonProperty("longitude") Double longitude,
@@ -42,7 +41,6 @@ public class EventBody {
         this.userId = userId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
-        //this.category = category;
         this.categorySet = categorySet;
         this.latitude = latitude;
         this.longitude = longitude;
