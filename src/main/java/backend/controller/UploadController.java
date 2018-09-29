@@ -35,7 +35,6 @@ public class UploadController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> readCoord(@RequestBody RouteForTransfer routeForTransfer) {
         Long userId = Long.valueOf(JWTUtils.getAudience(routeForTransfer.getToken().split(" ")[1]).get(0));
-        //Long userId = new Long(JWTUtils.getAudience(routeForTransfer.getToken()).get(0));
         for (Route route : routeForTransfer.getUserCoords()) {
             Route toSafe = new Route(route);
             toSafe.setDateOfCreation(route.getroute().get(0).getDate());
