@@ -61,7 +61,6 @@ public class EventController {
         Map<String, String[]> params = webRequest.getParameterMap();
         params.forEach((s, strings) -> {
             requestParams.add(Double.parseDouble(strings[0]));
-            System.out.println(strings[0]);
         });
         this.eventService.findAllEventsInBorder(requestParams.get(0), requestParams.get(1), requestParams.get(2), requestParams.get(3))
                 .forEach(event -> eventList.add(event));

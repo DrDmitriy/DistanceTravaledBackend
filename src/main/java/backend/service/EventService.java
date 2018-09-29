@@ -65,7 +65,6 @@ public class EventService {
         if (eventForm == null) {
             return null;
         } else {
-            System.out.println("lllllllllllllllll" + eventForm.getCategories());
             Event event = eventRepository.getEventByEventId(eventForm.getId());
             event.setStatus("publish");
             event.setLocation(eventForm.getLocation());

@@ -27,7 +27,6 @@ public class FacebookController {
         Map data = (HashMap) ((OAuth2Authentication) request.getUserPrincipal()).getUserAuthentication().getDetails();
         String email = data.get("email").toString();
         String names = data.get("name").toString();
-        System.out.println(names);
         String name = names.substring(0, names.indexOf(" "));
         String surname = names.substring(names.indexOf(" ") + 1, names.length());
         userService.saveUser(UserFormData.builder().email(email).password(" ").name(name).surname(surname).build());

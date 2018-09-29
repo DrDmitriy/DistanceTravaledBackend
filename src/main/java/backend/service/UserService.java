@@ -36,7 +36,6 @@ public class UserService {
                         .facebook(false)
                     .build();
             userRepository.save(userEntity);
-            System.out.println(userEntity);
             return userEntity;
         } else { return null; }
     }
