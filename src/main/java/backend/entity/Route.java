@@ -43,13 +43,13 @@ public class Route {
         this.userID = userID;
     }
 
-    public Route(Route route){
+    public Route(Route route) {
         this.route = route.route;
         this.dateOfCreation = route.dateOfCreation;
         this.userID = route.userID;
     }
 
-    public Route(List<Coordinate> route, Long userID, Long dateOfCreation){
+    public Route(List<Coordinate> route, Long userID, Long dateOfCreation) {
         this.route = route;
         this.userID = userID;
         this.dateOfCreation = dateOfCreation;
@@ -62,6 +62,7 @@ public class Route {
 
     /**
      * methods add new Coordinate to the list initializing if it necessary
+     *
      * @param next
      */
 
@@ -78,7 +79,6 @@ public class Route {
         }
         nextroute.forEach(route::add);
     }
-
 
 
     public Long getRouteID() {
@@ -105,7 +105,11 @@ public class Route {
         this.userID = userID;
     }
 
-    public void setDateOfCreation(Long dateOfCreation){ this.dateOfCreation = dateOfCreation; }
+    public void setDateOfCreation(Long dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
+    }
 
-    public Long getDateOfCreation(){ return this.dateOfCreation; }
+    public Long getDateOfCreation() {
+        return this.dateOfCreation;
+    }
 }

@@ -1,8 +1,6 @@
 package backend;
 
-import backend.entity.Coordinate;
 import backend.forms.UserFormData;
-import backend.service.RouteService;
 import backend.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,10 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import java.util.Arrays;
-import java.util.List;
-
 
 @SpringBootApplication
 @Configuration

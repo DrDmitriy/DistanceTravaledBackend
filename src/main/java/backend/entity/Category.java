@@ -15,7 +15,7 @@ public class Category {
     private Long categoryId;
     private String categoryName;
 
-    @ManyToMany//(cascade = CascadeType.ALL)
+    @ManyToMany
     @JsonIgnore
     @JoinTable(name = "event_category",
             joinColumns = @JoinColumn(name = "categoryId"),
@@ -67,7 +67,6 @@ public class Category {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(categoryId);
     }
 }

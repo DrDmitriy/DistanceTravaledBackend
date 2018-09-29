@@ -17,8 +17,8 @@ import java.util.List;
 public class UserEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE)
-    @Column(name="user_id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name = "user_id", nullable = false, unique = true)
     private Long userID;
 
     @Basic

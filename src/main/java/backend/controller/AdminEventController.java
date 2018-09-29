@@ -87,18 +87,18 @@ public class AdminEventController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             Event event = Event.builder()
-                            .eventName(eventForm.getLabel())
-                            .startEvent(convertDateToMills(eventForm.getStartStr()))
-                            .endEvent(convertDateToMills(eventForm.getEndStr()))
-                            .creationDate(System.currentTimeMillis())
-                            .latitude(eventForm.getLat())
-                            .longitude(eventForm.getLng())
-                            .categories(eventForm.getCategories().stream().map(categoryService::findByName).collect(Collectors.toSet()))
-                            .location(eventForm.getLocation())
-                            .eventDescription(eventForm.getDescription())
-                            .status("publish")
-                            .userEntity(userService.getByEmail(dataToken.get(1)))
-                          .build();
+                    .eventName(eventForm.getLabel())
+                    .startEvent(convertDateToMills(eventForm.getStartStr()))
+                    .endEvent(convertDateToMills(eventForm.getEndStr()))
+                    .creationDate(System.currentTimeMillis())
+                    .latitude(eventForm.getLat())
+                    .longitude(eventForm.getLng())
+                    .categories(eventForm.getCategories().stream().map(categoryService::findByName).collect(Collectors.toSet()))
+                    .location(eventForm.getLocation())
+                    .eventDescription(eventForm.getDescription())
+                    .status("publish")
+                    .userEntity(userService.getByEmail(dataToken.get(1)))
+                    .build();
             eventService.saveEvent(event);
             return new ResponseEntity<>(HttpStatus.OK);
         }

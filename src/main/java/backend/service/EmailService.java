@@ -35,7 +35,7 @@ public class EmailService {
             msg.setFrom("DistTrav@gmail.com");
             msg.setTo(email);
             msg.setSubject("Event Delete");
-            msg.setText("<html><body>hi,<br/>The event was remotely located:"+ location +"</body></html>", true);
+            msg.setText("<html><body>hi,<br/>The event was remotely located:" + location + "</body></html>", true);
             mailSender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();

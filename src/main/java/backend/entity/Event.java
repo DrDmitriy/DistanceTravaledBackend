@@ -4,9 +4,9 @@ import backend.controller.requestbody.EventBody;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = {"categories","userEntity"})
+@ToString(exclude = {"categories", "userEntity"})
 @Data
 public class Event implements Serializable {
     @Id
@@ -42,7 +42,7 @@ public class Event implements Serializable {
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "categoryId"))
 
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
 
     public Event(EventBody eventBody) {
         this.eventName = eventBody.getEventName();
@@ -58,129 +58,3 @@ public class Event implements Serializable {
         this.location = eventBody.getLocation();
     }
 }
-
- /*  public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
-    public Double getUserRating() {
-        return userRating;
-    }
-
-    public void setUserRating(Double userRating) {
-        this.userRating = userRating;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getEventDescription() {
-        return eventDescription;
-    }
-
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
-    }
-
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity user) {
-        this.userEntity = user;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Long getStartEvent() {
-        return startEvent;
-    }
-
-    public void setStartEvent(Long startEvent) {
-        this.startEvent = startEvent;
-    }
-
-    public Long getEndEvent() {
-        return endEvent;
-    }
-
-    public void setEndEvent(Long endEvent) {
-        this.endEvent = endEvent;
-    }
-
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public Long getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Long creationDate) {
-        this.creationDate = creationDate;
-
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "eventId=" + eventId +
-                ", eventName='" + eventName + '\'' +
-                ", eventDiscription='" + eventDescription + '\'' +
-                ", user=" + userEntity +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", location='" + location + '\'' +
-                ", startEvent=" + startEvent +
-                ", endEvent=" + endEvent +
-                ", userRating=" + userRating +
-                '}';
-    }
-
-}
-*/

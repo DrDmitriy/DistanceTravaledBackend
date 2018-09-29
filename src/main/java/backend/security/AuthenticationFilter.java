@@ -15,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -42,12 +41,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             email = userEntity.getEmail();
             final UsernamePasswordAuthenticationToken token;
             UserEntity forFacebook = userRepository.getUserByEmail(email);
-            if (forFacebook!=null && forFacebook.isFacebook()) {
+            if (forFacebook != null && forFacebook.isFacebook()) {
                 token = new UsernamePasswordAuthenticationToken(
                         userEntity.getEmail(), " "
                 );
             } else {
-                if (userEntity.getPassword()!=null && userEntity.getPassword().equals(" ")) {
+                if (userEntity.getPassword() != null && userEntity.getPassword().equals(" ")) {
                     token = new UsernamePasswordAuthenticationToken(
                             userEntity.getEmail(), ""
                     );

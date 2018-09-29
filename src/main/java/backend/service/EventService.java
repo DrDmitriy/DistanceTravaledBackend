@@ -51,9 +51,7 @@ public class EventService {
     public Iterable<Event> findVerifyEvent() {
         return this.eventRepository.findEventsByStatusEquals("verify");
     }
-    public Iterable<Event> findAllPublish() {
-        return this.eventRepository.findEventsByStatusEquals("publish");
-    }
+
     public Iterable<Event> findAllUserVerifyEvents(UserEntity userEntity) {
         return this.eventRepository.findEventsByUserEntityEqualsAndStatusEquals(userEntity, STATUS_VERIFY);
     }
@@ -67,7 +65,7 @@ public class EventService {
         if (eventForm == null) {
             return null;
         } else {
-            System.out.println("lllllllllllllllll"+eventForm.getCategories());
+            System.out.println("lllllllllllllllll" + eventForm.getCategories());
             Event event = eventRepository.getEventByEventId(eventForm.getId());
             event.setStatus("publish");
             event.setLocation(eventForm.getLocation());
@@ -89,6 +87,6 @@ public class EventService {
     }
 
     public Iterable<Event> findAllEventsInBorder(Double neLat, Double neLng, Double swLat, Double swLng) {
-        return this.eventRepository.findEventsByLatitudeBetweenAndLongitudeBetweenAndStatusEquals(swLat,neLat,swLng,neLng, this.STATUS_PUBLISH);
+        return this.eventRepository.findEventsByLatitudeBetweenAndLongitudeBetweenAndStatusEquals(swLat, neLat, swLng, neLng, this.STATUS_PUBLISH);
     }
 }

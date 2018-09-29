@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Service
 public class CategoryService {
-    private static final Logger log = LoggerFactory.getLogger(EventService.class);
+    private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
 
     private CategoryRepository categoryRepository;
 
@@ -35,6 +35,6 @@ public class CategoryService {
     }
 
     public Iterable<Category> findAll() {
-       return this.categoryRepository.findAll();
+        return this.categoryRepository.findAll();
     }
 }

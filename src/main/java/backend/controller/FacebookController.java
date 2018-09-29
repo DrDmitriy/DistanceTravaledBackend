@@ -32,7 +32,7 @@ public class FacebookController {
         String surname = names.substring(names.indexOf(" ") + 1, names.length());
         userService.saveUser(UserFormData.builder().email(email).password(" ").name(name).surname(surname).build());
         if (userService.getByEmail(email).getRole().equals(Role.USER)) {
-            userService.joinFacebook(email,true);
+            userService.joinFacebook(email, true);
             response.sendRedirect("http://localhost:4200/home?email=" + email);
             return "hi";
         } else {

@@ -22,21 +22,21 @@ public class UploadController {
     RouteService routeService;
 
     @Autowired
-    public UploadController(UserService userService, RouteService routeService){
+    public UploadController(UserService userService, RouteService routeService) {
         this.routeService = routeService;
         this.userService = userService;
     }
 
     @Qualifier("userService")
-    public void setUserService(UserService userService){
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> readCoord(@RequestBody RouteForTransfer routeForTransfer){
+    public ResponseEntity<Void> readCoord(@RequestBody RouteForTransfer routeForTransfer) {
         Long userId = Long.valueOf(JWTUtils.getAudience(routeForTransfer.getToken().split(" ")[1]).get(0));
         //Long userId = new Long(JWTUtils.getAudience(routeForTransfer.getToken()).get(0));
-        for(Route route : routeForTransfer.getUserCoords()){
+        for (Route route : routeForTransfer.getUserCoords()) {
             Route toSafe = new Route(route);
             toSafe.setDateOfCreation(route.getroute().get(0).getDate());
             toSafe.setUserID(userId);

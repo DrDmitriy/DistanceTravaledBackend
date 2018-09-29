@@ -13,7 +13,7 @@ public class UserFormData {
     private String name;
     private String surname;
 
-    public UserFormData(String email, String password, String name, String surname){
+    public UserFormData(String email, String password, String name, String surname) {
         this.email = email;
         this.password = password;
         this.name = name;

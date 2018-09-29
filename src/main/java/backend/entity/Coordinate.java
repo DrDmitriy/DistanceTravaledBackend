@@ -5,8 +5,6 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 
-import java.sql.Timestamp;
-
 /**
  * Class represent a related node entity in the noSQL database Neo4j
  * Graph storage of routes and coordinates with Long primary key

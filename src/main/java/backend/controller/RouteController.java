@@ -22,13 +22,14 @@ public class RouteController {
     private RouteService routeService;
 
     @Autowired
-    public RouteController(RouteService routeService){
+    public RouteController(RouteService routeService) {
 
         this.routeService = routeService;
     }
 
     @GetMapping(value = "/routes")
-    public @ResponseBody List<Route> getRoutes(WebRequest requestParam, HttpServletRequest request){
+    public @ResponseBody
+    List<Route> getRoutes(WebRequest requestParam, HttpServletRequest request) {
         final String token = request.getHeader(Constants.AUTH_HEADER).substring(7);
         List<String> dataToken = JWTUtils.getAudience(token);
 
@@ -38,11 +39,10 @@ public class RouteController {
         requestParam.getParameterMap().forEach((name, date) -> {
             dateList.add(Long.valueOf(date[0]));
         });
-        if(dateList.size() == 2) {
+        if (dateList.size() == 2) {
             routeService.findRutesForCurentDates(dateList.get(0), dateList.get(1)).forEach(routesList::add);
             return routesList;
-        }
-        else {
+        } else {
             routeService.findAllUserRoutes((Long.valueOf(dataToken.get(0)))).forEach((routesList::add));
             return routesList;
         }

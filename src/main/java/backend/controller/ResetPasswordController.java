@@ -46,7 +46,7 @@ public class ResetPasswordController {
         final String token = request.getHeader(Constants.AUTH_HEADER).substring(7);
         final String email = JWTUtils.getAudience(token).get(1);
         UserEntity userEntity = resetPasswordService.updatePasswordByEmail(email, userFormData.getPassword());
-        if (userEntity==null) {
+        if (userEntity == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<>(HttpStatus.OK);
